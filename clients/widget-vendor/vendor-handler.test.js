@@ -1,7 +1,7 @@
 'use strict';
 
 const socket = require('../lib/socket.js');
-const { generateOrder, thankDriver } = require('./handlers');
+const { generateOrder, thankDriver } = require('./handlers.js');
 
 jest.mock('../lib/socket.js', () => {
   return {
@@ -24,20 +24,20 @@ afterEach(() => {
 
 describe('Vendor', () => {
   let payload = {
-    store: '1-206-flowers',
+    store: 'Widget Inc.',
     orderId: 'test123',
     customer: 'Ryan',
     address: 'home',
   };
   it('emits an order as expected', () => {
     generateOrder(socket, payload);
-    expect(consoleSpy).toHaveBeenCalledWith('VENDOR: order ready for pickup.');
+    expect(consoleSpy).toHaveBeenCalledWith('VENDOR: Widget order ready for pickup.');
     expect(socket.emit).toHaveBeenCalledWith('PICKUP', payload);
   });
 
   it('thanks driver', () => {
     thankDriver(payload);
-    expect(consoleSpy).toHaveBeenCalledWith('Thanks for delivery the package to', payload.customer);
+    expect(consoleSpy).toHaveBeenCalledWith('Thanks for delivering the widgets to', payload.customer);
 
   });
 });
